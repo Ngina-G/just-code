@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block styles %}
+    {{ super() }}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Londrina+Outline&family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="container"
+  style="background-image: url('/static/gradienta-LeG68PrXA6Y-unsplash.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 98.7vw;
+  margin-top: -4em;">
+
+  <div class="col-md-4" style="margin-top: 6em;">
+    {{wtf.quick_form(form)}}
+  </div>
+
+</div>
+{% endblock %}

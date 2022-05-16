@@ -1,0 +1,63 @@
+{% extends 'base.html'%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+    {{ super() }}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Londrina+Outline&family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+
+<div 
+class="container"
+style="background-image: url('/static/gradienta-LeG68PrXA6Y-unsplash.jpg');
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+height: 100vh;
+width: 98.7vw;
+margin-top: -4em;">
+
+  <div class="row justify-content-md-center" style="margin-top: 6em;">
+
+    <div class="col-md-4 text-center">
+      <h3 style="margin-bottom: 1.5em; font-size: 3em;"> {{user.username| capitalize}} </h3>
+
+      {% if user.bio %}
+        <p style="margin-bottom: 1em;"> {{user.bio}}</p>
+
+      {%else%}
+        <p style="margin-bottom: 1em;"> {{user.username| capitalize}} has no bio </p>
+      {% endif %}
+
+      {% if user == current_user %}
+        <a href="{{url_for('main.update_profile',uname=user.username)}}" style="margin-bottom: 1em;">Edit profile</a>
+      {% endif %}
+
+    </div>
+    <div class="col-md-6 text-center d-flex justify-content-center" style="margin-bottom: 1em;">
+      {% if user.profile_pic_path %}
+
+      <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail" style="border: 1px solid pink;">
+
+      {%else%}
+      <div class="text-center align-text-center">
+        <div class="mx-auto" style="margin-bottom: 1em;border: 1px solid pink; width:140px; height:160px;">
+          <p class="p">No profile picture</p>
+        </div>
+      </div>
+
+      {% endif %}
+
+      <form  action="{{url_for('main.update_pic',uname=user.username)}}" method="post" enctype = "multipart/form-data">
+
+        <input type="file"  name="photo" class="form-control" style="margin-bottom: 1em;" required>
+        <input type="submit"  style="background-color: #fe696d; margin-bottom: 1em;">
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

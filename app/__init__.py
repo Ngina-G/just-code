@@ -5,6 +5,8 @@ from flask_login import LoginManager
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from config import config_options
+from flask_mail import Mail
+
 
 #Initializing Application and Initializing Flask Extensions
 login_manager = LoginManager()
@@ -16,6 +18,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 photos = UploadSet('photos', IMAGES)
 csrf = CSRFProtect()
+mail = Mail()
 
 def create_app(config_name):
     """Creating app configurations
@@ -37,6 +40,10 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    mail.init_app(app)
+
+    with app.app_context():
+        db.create_all()
 
     # Registering the blueprint
     from .main import main as main_blueprint
@@ -48,6 +55,7 @@ def create_app(config_name):
     # setting config
     # from .request import configure_request
     # configure_request(app)
+    configure_uploads(app, photos)
 
 
     return app

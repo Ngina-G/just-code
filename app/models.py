@@ -19,7 +19,7 @@ class User(UserMixin,db.Model):
     password_hash = db.Column(db.String(255))
     photos = db.relationship('PhotoProfile',backref = 'user',lazy = "dynamic")
     posts = db.relationship("Post", backref="user", lazy = "dynamic")
-    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
+    comment = db.relationship("Comment", backref="user", lazy = "dynamic")
 
     @property
     def password(self):
@@ -56,6 +56,10 @@ class Post(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    def __init__(self, title, content): 
+        self.title = title
+        self.content = content
+
     def save_post(self):
         """
         Saves posts
@@ -81,6 +85,8 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
 
+    def __init__(self, name):
+        self.name = name
 
     def save_category(self):
         db.session.add(self)
@@ -95,33 +101,36 @@ class Category(db.Model):
 
 class Comment(db.Model):
     
-     __tablename__ = 'comments'     
+    __tablename__ = 'comments'     
 
     
-     id = db.Column(db. Integer, primary_key=True)
-     opinion = db.Column(db.String(255))
-     time_posted = db.Column(db.DateTime, default=datetime.utcnow)
-     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+    id = db.Column(db. Integer, primary_key=True)
+    opinion = db.Column(db.String(255))
+    time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+     
+    def __init__(self, opinion, time_posted):
+        self.opinion = opiniion
+        self.time_posted = time_posted
 
-
-     def save_comment(self):
+    def save_comment(self):
         """
         Save the Comments/comments per post
         """
         db.session.add(self)
         db.session.commit()
         
-     @classmethod
-     def delete_comment(cls, id):
-        gone = Comment.query.filter_by(id = id).first()
-        db.session.delete(gone)
-        db.session.commit()    
-
-     @classmethod
-     def get_comments(self, id):
-        comment = Comment.query.order_by(Comment.time_posted.desc()).filter_by(posts_id=id).all()
-        return comment
+    @classmethod
+    def delete_comment(cls, id):
+       gone = Comment.query.filter_by(id = id).first()
+       db.session.delete(gone)
+       db.session.commit()   
+        
+    @classmethod
+    def get_comments(self, id):
+       comment = Comment.query.order_by(Comment.time_posted.desc()).filter_by(posts_id=id).all()
+       return comment
 
 
 

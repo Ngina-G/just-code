@@ -110,9 +110,8 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
      
-    def __init__(self, opinion, time_posted):
-        self.opinion = opiniion
-        self.time_posted = time_posted
+    def __init__(self, opinion):
+        self.opinion = opinion
 
     def save_comment(self):
         """
@@ -128,9 +127,14 @@ class Comment(db.Model):
        db.session.commit()   
         
     @classmethod
-    def get_comments(self, id):
+    def fetch_comments(self, id):
        comment = Comment.query.order_by(Comment.time_posted.desc()).filter_by(posts_id=id).all()
        return comment
+
+    @classmethod
+    def get_comments(cls,id):
+        comments = Comment.query.filter_by(post_id=id).all()
+        return comments
 
 
 

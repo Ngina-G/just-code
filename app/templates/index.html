@@ -1,14 +1,26 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% import 'macros.html' as macro%}
+<!-- {% extends 'base.html'%} 
+{% import 'macros.html' as macro %} 
 
-{% block styles %}
-    {{ super() }}
-        <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
-        <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Londrina+Outline&family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap" rel="stylesheet">
-{% endblock %}
-
-<!-- Content index block -->
-{% block content %}
-
-{% endblock %}
+{% block content%}
+<div class="container">
+  <div class="row home-posts">
+    <div class="col-md-3">
+      <h4 class="text-left">
+        <a class="btn btn-primary" href="/add/category">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add A Category </a>
+      </h4>
+      <ol class="category-list">
+        {{ macro.displayCategoryList(categories) }}
+      </ol>
+    </div>
+    <div class="col-md-9 all-posts">
+      <h2>All Posts</h2>
+      {{macro.displayAllPosts(all_post)}}
+    </div>
+  </div>
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="site-heading">
+      <span class="subheading"><i class="fas fa-quote-left"></i> <em>{{quote.quote}}</em> <i class="fas fa-quote-right"></i></span>
+      <h2>{{quote.author}}</h2>
+</div>
+{% endblock %} -->

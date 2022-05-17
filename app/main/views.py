@@ -5,6 +5,10 @@ from .. import db,photos
 from .forms import UpdateProfile
 from ..models import User, PhotoProfile
 
+
+
+# profile
+
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
@@ -44,3 +48,7 @@ def update_pic(uname):
         user_photo = PhotoProfile(pic_path = path,user = user)
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
+main.errorhandler(404)
+def page_not_found(e):
+    return render_template('fourOwfour.html'),404

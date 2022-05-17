@@ -2,6 +2,7 @@ from . import db
 from . import login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
+from datetime import datetime
 
 class User(UserMixin,db.Model):
     """
@@ -17,6 +18,9 @@ class User(UserMixin,db.Model):
     pass_secure = db.Column(db.String(255))
     password_hash = db.Column(db.String(255))
     photos = db.relationship('PhotoProfile',backref = 'user',lazy = "dynamic")
+    posts = db.relationship("Post", backref="user", lazy = "dynamic")
+    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
+
     @property
     def password(self):
         raise AttributeError('You cannot read the password attribute')
@@ -32,9 +36,99 @@ class User(UserMixin,db.Model):
         return f'User {self.username}'
 
 
+
 class PhotoProfile(db.Model):
     __tablename__ = 'profile_photos'
 
     id = db.Column(db.Integer,primary_key = True)
     pic_path = db.Column(db.String())
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+
+
+
+class Post(db.Model):
+    __tablename__='posts'
+
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(255))
+    content = db.Column(db.String())
+    posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def save_post(self):
+        """
+        Saves posts
+        """
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_post(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def get_posts(id):
+        posts = Post.query.filter_by(category_id=id).all()
+        return posts
+
+
+
+class Category(db.Model):
+    
+    __tablename__ = 'categories'
+
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+
+
+    def save_category(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_categories(cls):
+        categories = Category.query.all()
+        return categories
+
+
+
+class Comment(db.Model):
+    
+     __tablename__ = 'comments'     
+
+    
+     id = db.Column(db. Integer, primary_key=True)
+     opinion = db.Column(db.String(255))
+     time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+
+
+     def save_comment(self):
+        """
+        Save the Comments/comments per post
+        """
+        db.session.add(self)
+        db.session.commit()
+        
+     @classmethod
+     def delete_comment(cls, id):
+        gone = Comment.query.filter_by(id = id).first()
+        db.session.delete(gone)
+        db.session.commit()    
+
+     @classmethod
+     def get_comments(self, id):
+        comment = Comment.query.order_by(Comment.time_posted.desc()).filter_by(posts_id=id).all()
+        return comment
+
+
+
+class Quote:
+    """
+    Blueprint class for quotes consumed from API
+    """
+    def __init__(self, author, quote):
+        self.author = author
+        self.quote = quote

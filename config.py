@@ -5,7 +5,7 @@ class Config:
     """General configuration parent class
     """
     SECRET_KEY = os.environ.get("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOADED_PHOTOS_DEST ='app/static/photos'
 
@@ -27,11 +27,10 @@ class ProdConfig(Config):
     Args:
         Config (The parent configuration class): with General production configuration settings
     """
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
-    # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
-    # DEBUG =True
-    # WTF_CSRF_SECRET_KEY="a csrf secret key" 
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
+    DEBUG =True
+    WTF_CSRF_SECRET_KEY="a csrf secret key" 
 
 
 class Testconfig(Config):
@@ -41,7 +40,7 @@ class Testconfig(Config):
         Config (The parent configuration class): with General test configuration settings
     """
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode_test'
-    # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
 
 
 class DevConfig(Config):
@@ -52,9 +51,9 @@ class DevConfig(Config):
     """
     pass
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
-    WTF_CSRF_SECRET_KEY="a csrf secret key" 
-    DEBUG =True
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:Postgres@localhost/justcode'
+    # WTF_CSRF_SECRET_KEY="a csrf secret key" 
+    # DEBUG =True
 
 
 

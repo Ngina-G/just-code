@@ -7,7 +7,7 @@ class PostTest(unittest.TestCase):
         Test class to test the behaviour of the Post class
     """
     def setUp(self):
-        self.new_post = Post('Get started with Html', 'Html is pretty straight-forward and a great way to get your feet wet with coding.')
+        self.new_post = Post(1,'Get started with Html', 'Html is pretty straight-forward and a great way to get your feet wet with coding.', 1)
 
     def test_initialization(self):
         self.assertEquals(self.new_post.title, 'Get started with Html')

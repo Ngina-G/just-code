@@ -10,7 +10,7 @@ class CommentTest(unittest.TestCase):
         """
             Set up method that will run before every test
         """
-        self.new_comment= Comment('Consistency is key')
+        self.new_comment= Comment('Consistency is key',1,1)
 
     def test_initialization(self):
         self.assertEquals(self.new_comment.opinion, 'Consistency is key')

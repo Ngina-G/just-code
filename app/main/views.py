@@ -14,12 +14,12 @@ def index():
     quote = get_quote()
     print(all_posts)
     
-    # if request.method == "POST":
-    #     new_subscriber = Subscriber(email = request.form.get("subscriber"))
-    #     db.session.add(new_subscriber)
-    #     db.session.commit()
-    #     welcome_message("Thank you for subscribing to the Blog Post", 
-    #                     "email/welcome", new_subscriber.email)
+    if request.method == "POST":
+        new_subscriber = Subscriber(email = request.form.get("subscriber"))
+        db.session.add(new_subscriber)
+        db.session.commit()
+        welcome_message("Thank you for subscribing to the justcode", 
+                        "email/welcome", new_subscriber.email)
     
     title = 'Blog Post'
     return render_template('index.html',all_posts= all_posts, categories = all_category, title=title, quote=quote)
@@ -28,7 +28,7 @@ def index():
 @login_required
 def new_post(id):
     form = PostForm()
-    category = Category.query.filter_by(id=id).first()
+    category = PostCategory.query.filter_by(id=id).first()
     
     if category is None:
         abort(404)
@@ -38,7 +38,7 @@ def new_post(id):
         new_post= Post(title=title, content=content, category_id = category.id, user_id = current_user.id)
         new_post.save_post()
         
-        subscribers = Subscribers.query.all()
+        subs = Subscribers.query.all()
         for sub in subs:
             notification_message(post_title, 
                             "email/notification", sub.email, new_post = new_post)
@@ -46,7 +46,7 @@ def new_post(id):
         return redirect(url_for('.category', id=category.id))
 
     
-    return render_template('new_post.html', post_form = form, category = category)
+    return render_template('new_post.html',post_form = form, category = category)
 
 @main.route('/categories/<int:id>')
 def category(id):
@@ -59,7 +59,7 @@ def category(id):
     
 @main.route('/add/category',methods = ['GET','POST'])
 @login_required
-def new_category(id):
+def new_category():
     form = CategoryForm()
 
     if form.validate_on_submit():
@@ -85,7 +85,9 @@ def view_post(id):
         abort(404)
     
     comment = Comment.get_comments(id)
-    return render_template('see_post.html', posts = posts, comment = comment)
+    count_likes = Votes.query.filter_by(posts_id=id, vote=1).all()
+    count_dislikes = Votes.query.filter_by(posts_id=id, vote=2).all()
+    return render_template('see-post.html', posts = posts, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes), category_id = id, categories=all_category)
     
 
 @main.route('/write_comment/<int:id>', methods = ['GET','POST'])
@@ -113,7 +115,7 @@ def delete_comment(id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     db.session.delete(comment)
     db.session.commit()
-    return redirect(url_for("main.new_post", id = post.id))
+    return redirect(url_for("main.post", id = post.id))
 
 
 

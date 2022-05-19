@@ -154,7 +154,7 @@ class Quote:
     """
     Blueprint class for quotes consumed from API
     """
-    def __init__(self, author, quote):
-        self.author = author
+    def __init__(self, a, quote):
+        self.author = a
         self.quote = quote
 

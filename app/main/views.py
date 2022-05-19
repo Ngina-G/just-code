@@ -59,12 +59,12 @@ def category(id):
     
 @main.route('/add/category',methods = ['GET','POST'])
 @login_required
-def new_category():
+def new_category(id):
     form = CategoryForm()
 
     if form.validate_on_submit():
         name = form.name.data
-        new_category = PostCategory(name = name)
+        new_category = Category(name = name)
         new_category.save_category()
 
         return redirect(url_for('.index'))

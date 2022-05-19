@@ -10,10 +10,12 @@
 {% block content %}
 <div class="container">
      <div class="col-md-12">
-        <p class="text-left"><a class="btn btn-info" href="{{url_for('.new_post',id=posts.category_id)}}">Post</a></p>
-        <div class="well" style="background-color:#d0d1cb">
-          <h3>{{posts.content}}</h3>
-        </div>
+            <div style="font-family: 'Josefin Slab', serif; font-weight:400;padding: 3rem;background-color: antiquewhite;">
+                <p class="text-left"><a class="btn btn-info" href="{{url_for('.new_post',id=posts.category_id)}}">Post</a></p>
+                <div class="well">
+                <h3>{{posts.content}}</h3>
+                </div>
+            </div>
 
         <!-- comments -->
         <div class="col-md-6 col-offset-1">

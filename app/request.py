@@ -1,7 +1,7 @@
 import requests
 from .models import Quote
 
-url = "http://quotes.stormconsultancy.co.uk/random.json"
+url = "https://zenquotes.io/api/random/random.json"
 
 def get_quote():
     """
@@ -9,6 +9,5 @@ def get_quote():
     """
     response = requests.get(url).json()
 
-    random_quote = Quote(response.get("author"), response.get("quote"))
+    random_quote = Quote(response[0]["a"], response[0]["q"])
     return random_quote
-get_quote()

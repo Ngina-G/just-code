@@ -5,8 +5,8 @@
     {{ super() }}
         <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@1,400;1,600&family=Josefin+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
-{% endblock %}
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Josefin+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
+        {% endblock %}
 
 <!-- Content index block -->
 {% block content%}
@@ -30,7 +30,7 @@
           padding: 3rem;
           background-color: antiquewhite;">
       <div class="card-body">
-        <h5 class="card-title">Developer's quote of the day</h5>
+        <h5 class="card-title" style="font-family: 'EB Garamond', serif; font-weight:600;">Quote of the day</h5>
         <p class="card-text">{{quote.quote}}</p>
         <h6 class=" mb-2 text-muted">{{quote.author}}</h6>
       </div>
@@ -42,21 +42,21 @@
         background-color: #fdfbfb;
         padding: 2rem;">
 
-      <div class="col-lg-2">
+      <div class="col-lg-2" style="text-align:left;">
 
         <h4 class="" style="margin-left: 1rem; margin-right: 1rem;">
           <a href="/add/category"><button type="button" class="btn btn-dark"> Add Category</button></a>
         </h4>
 
-        <ol class="">
-          {{ macro.displayCategory(categories) }}
+        <ol style="list-style-type:none;">
+          {{ macro.displayCategoryList(categories) }}
         </ol>
 
       </div>
 
       <div class="col-md-auto text-center">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <h2>All Posts</h2>
+          <h2 style="font-family: 'EB Garamond', serif; font-weight:800;">All Posts</h2>
         <div style="
           margin-left: 2em;
           margin-right: 2em;">

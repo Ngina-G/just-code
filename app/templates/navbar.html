@@ -32,12 +32,6 @@
                         {% else %}
                         <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
                         {%endif%}
-                        <li>
-                        <select style="margin-top: 1.5rem; background-color: black; color: rgb(241, 229, 229); border-style:none;" name="Categories">
-                          {{ macro.displayCategoryList(categories) }}
-                          <option value="Add Category"><a href="/add/category" class="btn btn-dark"> Add Category</a></option>
-                        </select>
-                        </li>
                     </ul>
                 </ul>
             </div>

@@ -10,10 +10,10 @@ class CategoryTest(unittest.TestCase):
         """
             Set up method that will run before every test
         """
-        self.new_category= Category('Coding')
+        self.new_category= Category('Wellness')
 
     def test_initialization(self):
-        self.assertEquals(self.new_category.name, 'Coding')
+        self.assertEquals(self.new_category.name, 'Wellness')
 
     def test_instance(self):
         self.assertTrue(isinstance(self.new_category, Category))

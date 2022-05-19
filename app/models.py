@@ -50,6 +50,12 @@ class PhotoProfile(db.Model):
 
 
 
+class Subscriber(db.Model):
+    __tablename__ = "subscribers"
+    
+    id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(255), unique = True, index = True)
+
 class Post(db.Model):
     __tablename__='posts'
 
@@ -60,7 +66,8 @@ class Post(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, title, content): 
+    def __init__(self,category_id, title, content): 
+        self.category_id = category.id
         self.title = title
         self.content = content
 
@@ -89,7 +96,8 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
 
-    def __init__(self, name):
+    def __init__(self,id, name):
+        self.id = id
         self.name = name
 
     def save_category(self):
@@ -149,3 +157,21 @@ class Quote:
     def __init__(self, author, quote):
         self.author = author
         self.quote = quote
+
+# class PostCategory(db.Model):
+    
+#     __tablename__ = 'categories'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(255))
+#     description = db.Column(db.String(255))
+
+
+#     def save_category(self):
+#         db.session.add(self)
+#         db.session.commit()
+
+#     @classmethod
+#     def get_categories(cls):
+#         categories = PostCategory.query.all()
+#         return categories

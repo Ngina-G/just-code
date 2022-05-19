@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+ {% import 'macros.html' as macro%}
+
+ {% block styles %}
+    {{ super() }}
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@1,400;1,600&family=Josefin+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+<!-- content block -->
+{% block content %}
+<div class="container">
+     <div class="col-md-12">
+        <p class="text-left"><a class="btn btn-info" href="{{url_for('.new_post',id=posts.category_id)}}">Post</a></p>
+        <div class="well" style="background-color:#d0d1cb">
+          <h3>{{posts.content}}</h3>
+        </div>
+
+        <!-- comments -->
+        <div class="col-md-6 col-offset-1">
+          <a href="{{url_for('.post_comment',id=posts.id)}}"><button  class="btn btn-secondary">Add your comment</button></a>
+
+         {% if comment %}
+         {{ macro.displaySpecificPost(comment)}}
+         <hr>
+         {%else%}
+         <h3 class="text-center" style="color:rgb(138, 37, 121);">There are no comments </h3>
+         {% endif %}
+        </div>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,26 +1,70 @@
-<!-- {% extends 'base.html'%} 
+{% extends 'base.html'%} 
 {% import 'macros.html' as macro %} 
 
+{% block styles %}
+    {{ super() }}
+        <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@1,400;1,600&family=Josefin+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+<!-- Content index block -->
 {% block content%}
-<div class="container">
-  <div class="row home-posts">
-    <div class="col-md-3">
-      <h4 class="text-left">
-        <a class="btn btn-primary" href="/add/category">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add A Category </a>
-      </h4>
-      <ol class="category-list">
-        {{ macro.displayCategoryList(categories) }}
-      </ol>
+<body 
+  class="card text-center" 
+    style="
+      background-image: url('/static/21.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;">
+
+  <div class="row ">
+    <div 
+      class="card"
+        style="
+          width: 60%; 
+          margin-left: 20%; 
+          margin-right: 20%; 
+          margin-top: .5em; 
+          margin-bottom: 1.5em;
+          padding: 3rem;
+          background-color: antiquewhite;">
+      <div class="card-body">
+        <h5 class="card-title">Developer's quote of the day</h5>
+        <p class="card-text">{{quote.quote}}</p>
+        <h6 class=" mb-2 text-muted">{{quote.author}}</h6>
+      </div>
     </div>
-    <div class="col-md-9 all-posts">
-      <h2>All Posts</h2>
-      {{macro.displayAllPosts(all_post)}}
+
+    <div
+      class="row"
+      style="
+        background-color: #fdfbfb;
+        padding: 2rem;">
+
+      <div class="col-lg-2">
+
+        <h4 class="" style="margin-left: 1rem; margin-right: 1rem;">
+          <a href="/add/category"><button type="button" class="btn btn-dark"> Add Category</button></a>
+        </h4>
+
+        <ol class="">
+          {{ macro.displayCategory(categories) }}
+        </ol>
+
+      </div>
+
+      <div class="col-md-auto text-center">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <h2>All Posts</h2>
+        <div style="
+          margin-left: 2em;
+          margin-right: 2em;">
+          {{macro.displayAllPosts(all_post)}}
+        </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-lg-8 col-md-10 mx-auto">
-    <div class="site-heading">
-      <span class="subheading"><i class="fas fa-quote-left"></i> <em>{{quote.quote}}</em> <i class="fas fa-quote-right"></i></span>
-      <h2>{{quote.author}}</h2>
-</div>
-{% endblock %} -->
+</body>
+{% endblock %}

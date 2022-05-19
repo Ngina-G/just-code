@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+ {% import 'bootstrap/wtf.html' as wtf %}
+ {% import 'macros.html' as macro %} 
+
+ {% block styles %}
+ {{ super() }}
+ <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@1,400;1,600&family=Josefin+Slab:wght@200;300;400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {{wtf.quick_form(comment_form)}}
+    </div>
+{% endblock %}

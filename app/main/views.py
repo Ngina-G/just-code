@@ -9,20 +9,20 @@ from ..requests import get_quote
 @main.route('/')
 def index():
     
-    all_category = Category.get_categories()
     all_posts = Post.query.order_by('id').all()
+    all_category = Category.get_categories()
     quote = get_quote()
     print(all_posts)
     
     if request.method == "POST":
-        new_sub = Subscribers(email = request.form.get("subscriber"))
-        db.session.add(new_sub)
+        new_subscriber = Subscriber(email = request.form.get("subscriber"))
+        db.session.add(new_subscriber)
         db.session.commit()
         welcome_message("Thank you for subscribing to the Blog Post", 
-                        "email/welcome", new_sub.email)
+                        "email/welcome", new_subscriber.email)
     
     title = 'Blog Post'
-    return render_template('index.html',all_posts= all_posts, categories = all_category, title=title,quote=quote)
+    return render_template('index.html',all_posts= all_posts, categories = all_category, title=title, quote=quote)
 
 @main.route('/category/new-post/<int:id>',methods = ['GET','POST'])
 @login_required
@@ -35,10 +35,10 @@ def new_post(id):
 
     if form.validate_on_submit():
         content = form.content.data
-        new_post= Post(content=content, category_id = category.id, user_id = current_user.id)
+        new_post= Post(title=title, content=content, category_id = category.id, user_id = current_user.id)
         new_post.save_post()
         
-        subs = Subscribers.query.all()
+        subscribers = Subscribers.query.all()
         for sub in subs:
             notification_message(post_title, 
                             "email/notification", sub.email, new_post = new_post)
@@ -50,7 +50,7 @@ def new_post(id):
 
 @main.route('/categories/<int:id>')
 def category(id):
-    category = PostCategory.query.get(id)
+    category = Category.query.get(id)
     if category is None:
         abort(404)
 
@@ -74,20 +74,18 @@ def new_category():
     
     return render_template('new_category.html',title = title, category_form = form)
 
-@main.route('/view-post/<int:id>',methods = ['GET','POST'])
+@main.route('/see-post/<int:id>',methods = ['GET','POST'])
 @login_required
 def view_post(id):
     
-    all_category = PostCategory.get_categories()
+    all_category = Category.get_categories()
     posts = Post.query.get(id)
     
     if posts is None:
         abort(404)
     
-    comment = Comments.get_comments(id)
-    count_likes = Votes.query.filter_by(posts_id=id, vote=1).all()
-    count_dislikes = Votes.query.filter_by(posts_id=id, vote=2).all()
-    return render_template('view-post.html', posts = posts, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes), category_id = id, categories=all_category)
+    comment = Comment.get_comments(id)
+    return render_template('see-post.html', posts = posts, comment = comment)
     
 
 @main.route('/write_comment/<int:id>', methods = ['GET','POST'])
@@ -105,7 +103,7 @@ def post_comment(id):
         opinion = form.opinion.data
         new_comment = Comments(opinion = opinion, user_id = current_user.id, posts_id = posts.id)
         new_comment.save_comment()
-        return redirect(url_for('.view_post', id = posts.id))
+        return redirect(url_for('.see_post', id = posts.id))
     
     return render_template('post_comment.html', title = title, comment_form = form)
 

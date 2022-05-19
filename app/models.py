@@ -158,3 +158,31 @@ class Quote:
         self.author = a
         self.quote = quote
 
+class Votes(db.Model):
+    """
+    class to model votes
+    """
+    __tablename__='votes'
+
+    id = db.Column(db. Integer, primary_key=True)
+    vote = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    posts_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+
+    def save_vote(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_votes(cls,user_id,pitches_id):
+        votes = Votes.query.filter_by(user_id=user_id, posts_id=posts_id).all()
+        return votes
+
+    def __repr__(self):
+        return f'{self.vote}:{self.user_id}:{self.posts_id}'   
+    
+
+class Subscribers(db.Model):
+    __tablename__ = "subscribers"
+    id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(255), unique = True, index = True)

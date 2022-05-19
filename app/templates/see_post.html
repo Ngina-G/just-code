@@ -19,13 +19,22 @@
 
         <!-- comments -->
         <div class="col-md-6 col-offset-1">
-          <a href="{{url_for('.post_comment',id=posts.id)}}"><button  class="btn btn-secondary">Add your comment</button></a>
+            <table>
+                <tr>
+                  <td><h4 class="text-left"><a class="btn btn-round" href="{{url_for('.upvote',id=posts.id,vote_type=1)}}">Upvote <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">{{count_likes}}</span>  </a></h4></td>
+                  <td>&nbsp;</td>
+                  <td><h4 class="text-left"><a class="btn btn-round" href="{{url_for('.upvote',id=posts.id,vote_type=2)}}">Downvote <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{count_dislikes}} </a></h4></td>
+                  <td>&nbsp;</td>
+                  <td><h4 class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Comments <a href="{{url_for('.post_comment',id=posts.id)}}"><button  class="btn btn-secondary">Add your comment</button></a></h4></td>
+                </tr>
+              </table>
+          
 
          {% if comment %}
          {{ macro.displaySpecificPost(comment)}}
          <hr>
          {%else%}
-         <h3 class="text-center" style="color:rgb(138, 37, 121);">There are no comments </h3>
+         <h3 class="text-center" style="color:rgb(238, 132, 39);">no comments </h3>
          {% endif %}
         </div>
 

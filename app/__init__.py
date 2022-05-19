@@ -17,7 +17,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 photos = UploadSet('photos', IMAGES)
 csrf = CSRFProtect()
-maile = Mail()
+mail = Mail()
 simple = SimpleMDE()
 
 
@@ -41,7 +41,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
-    maile.init_app(app)
+    mail.init_app(app)
     simple.init_app(app)
 
     with app.app_context():

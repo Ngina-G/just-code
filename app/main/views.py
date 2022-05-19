@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from . import main
 from .. import db,photos
 from .forms import UpdateProfile, CategoryForm, CommentForm, PostForm
-from ..models import User, PhotoProfile, Post, Comment, Category
+from ..models import User, PhotoProfile, Post, Comment, Category, Subscribers, Votes
 from ..request import get_quote
 
 @main.route('/')
@@ -28,12 +28,13 @@ def index():
 @login_required
 def new_post(id):
     form = PostForm()
-    category = PostCategory.query.filter_by(id=id).first()
+    category = Category.query.filter_by(id=id).first()
     
     if category is None:
         abort(404)
 
     if form.validate_on_submit():
+        title = form.title.data
         content = form.content.data
         new_post= Post(title=title, content=content, category_id = category.id, user_id = current_user.id)
         new_post.save_post()
@@ -54,7 +55,7 @@ def category(id):
     if category is None:
         abort(404)
 
-    posts=Post.get_posts(id)
+    posts=Post.query.filter_by(id=category.id).all()
     return render_template('category.html', posts=posts, category=category)
     
 @main.route('/add/category',methods = ['GET','POST'])
@@ -76,7 +77,7 @@ def new_category():
 
 @main.route('/see-post/<int:id>',methods = ['GET','POST'])
 @login_required
-def view_post(id):
+def see_post(id):
     
     all_category = Category.get_categories()
     posts = Post.query.get(id)
@@ -87,7 +88,7 @@ def view_post(id):
     comment = Comment.get_comments(id)
     count_likes = Votes.query.filter_by(posts_id=id, vote=1).all()
     count_dislikes = Votes.query.filter_by(posts_id=id, vote=2).all()
-    return render_template('see-post.html', posts = posts, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes), category_id = id, categories=all_category)
+    return render_template('see_post.html', posts = posts, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes), category_id = id, categories=all_category)
     
 
 @main.route('/write_comment/<int:id>', methods = ['GET','POST'])
@@ -103,7 +104,7 @@ def post_comment(id):
 
     if form.validate_on_submit():
         opinion = form.opinion.data
-        new_comment = Comment(opinion = opinion, user_id = current_user.id, posts_id = posts.id)
+        new_comment = Comment(opinion = opinion, user_id = current_user.id, post_id = posts.id)
         new_comment.save_comment()
         return redirect(url_for('.see_post', id = posts.id))
     
@@ -117,7 +118,29 @@ def delete_comment(id, comment_id):
     db.session.commit()
     return redirect(url_for("main.post", id = post.id))
 
+@main.route('/post/upvote/<int:id>&<int:vote_type>')
+@login_required
+def upvote(id,vote_type):
+    votes = Votes.query.filter_by(user_id=current_user.id).all()
+    print(f'The new vote is {votes}')
+    to_str=f'{vote_type}:{current_user.id}:{id}'
+    print(f'The current vote is {to_str}')
 
+    if not votes:
+        new_vote = Votes(vote=vote_type, user_id=current_user.id, posts_id=id)
+        new_vote.save_vote()
+        print('YOU HAVE new VOTED')
+
+    for vote in votes:
+        if f'{vote}' == to_str:
+            print('YOU CANNOT VOTE MORE THAN ONCE')
+            break
+        else:   
+            new_vote = Votes(vote=vote_type, user_id=current_user.id, posts_id=id)
+            new_vote.save_vote()
+            print('YOU HAVE VOTED')
+            break
+    return redirect(url_for('.view_post', id=id)) 
 
 # profile
 @main.route('/user/<uname>')

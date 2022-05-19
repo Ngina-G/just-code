@@ -51,7 +51,7 @@ class PhotoProfile(db.Model):
 
 
 
-class Subscriber(db.Model):
+class Subscribers(db.Model):
     __tablename__ = "subscribers"
     
     id = db.Column(db.Integer, primary_key = True)
@@ -69,8 +69,7 @@ class Post(db.Model):
     comment = db.relationship("Comment", backref="posts", lazy = "dynamic")
     vote = db.relationship("Votes", backref="posts", lazy = "dynamic")
 
-    def __init__(self,category_id, title, content): 
-        self.category_id = category.id
+    def __init__(self,category_id, title, content, user_id): 
         self.title = title
         self.content = content
 
@@ -99,8 +98,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
 
-    def __init__(self,id, name):
-        self.id = id
+    def __init__(self, name):
         self.name = name
 
     def save_category(self):
@@ -125,7 +123,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
      
-    def __init__(self, opinion):
+    def __init__(self, opinion, post_id, user_id):
         self.opinion = opinion
 
     def save_comment(self):
@@ -184,8 +182,3 @@ class Votes(db.Model):
     def __repr__(self):
         return f'{self.vote}:{self.user_id}:{self.posts_id}'   
     
-
-class Subscribers(db.Model):
-    __tablename__ = "subscribers"
-    id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(255), unique = True, index = True)

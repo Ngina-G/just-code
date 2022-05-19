@@ -14,19 +14,29 @@ style="
       background-repeat: no-repeat;
       background-size: cover;">
   <div class=" col-md-10 col-md-offset-1 col-sm-12">
-      <h3 class="text-center">{{category.name|upper}}</h3>
+      <h2 class="text-center" style="font-family: 'EB Garamond', serif; font-weight:500;">{{category.name|upper}}</h2>
        <a href="/category/new-post/{{category.id}}"><button class="btn btn-dark"> Post a blog</button></a>
        <HR>
   </div>
 
   {% if posts %}
+    <div style="background-image: url('/static/21.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;">
       <div class="col-sm-12 col-md-8">
           {{ macro.displayPosts(posts)}}
       </div>
+    </div>
   {%else%}
-        <div class="well">
-          <h4 style="padding:10%; text-align:center; font-size:50px">SORRY BUT THERE ARE NO BLOG POSTS YET.
+        <div class="well"
+        style="background-image: url('/static/21.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;">
+          <h4 class="text-muted" style="padding:10%; text-align:center; padding: 2rem; background-color: antiquewhite;">SORRY BUT THERE ARE NO BLOG POSTS YET.
                 CLICK <a href="/category/new-post/{{category.id}}">HERE</a> TO POST ONE</h4>
+        </div>
         </div>
   {% endif %}
 </div

@@ -24,7 +24,8 @@ class User(UserMixin,db.Model):
     photos = db.relationship('PhotoProfile',backref = 'user',lazy = "dynamic")
     posts = db.relationship("Post", backref="user", lazy = "dynamic")
     comment = db.relationship("Comment", backref="user", lazy = "dynamic")
-
+    vote = db.relationship("Votes", backref="user", lazy = "dynamic")
+    
     @property
     def password(self):
         raise AttributeError('You cannot read the password attribute')
@@ -65,6 +66,8 @@ class Post(db.Model):
     posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    comment = db.relationship("Comment", backref="posts", lazy = "dynamic")
+    vote = db.relationship("Votes", backref="posts", lazy = "dynamic")
 
     def __init__(self,category_id, title, content): 
         self.category_id = category.id

@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="container col-md-6" style="text-align:center">
-    <h3>{{category.name|upper}} POST</h3>
+<div class="container col-md-6" style="text-align:center; font-family: 'EB Garamond', serif;">
+    <h3 style="font-family: 'EB Garamond', serif;">{{category.name|upper}} POST</h3>
   <div>
     <hr>
     {{wtf.quick_form(post_form)}}

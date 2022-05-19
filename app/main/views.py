@@ -4,7 +4,7 @@ from . import main
 from .. import db,photos
 from .forms import UpdateProfile, CategoryForm, CommentForm, PostForm
 from ..models import User, PhotoProfile, Post, Comment, Category
-from ..requests import get_quote
+from ..request import get_quote
 
 @main.route('/')
 def index():
@@ -14,12 +14,12 @@ def index():
     quote = get_quote()
     print(all_posts)
     
-    if request.method == "POST":
-        new_subscriber = Subscriber(email = request.form.get("subscriber"))
-        db.session.add(new_subscriber)
-        db.session.commit()
-        welcome_message("Thank you for subscribing to the Blog Post", 
-                        "email/welcome", new_subscriber.email)
+    # if request.method == "POST":
+    #     new_subscriber = Subscriber(email = request.form.get("subscriber"))
+    #     db.session.add(new_subscriber)
+    #     db.session.commit()
+    #     welcome_message("Thank you for subscribing to the Blog Post", 
+    #                     "email/welcome", new_subscriber.email)
     
     title = 'Blog Post'
     return render_template('index.html',all_posts= all_posts, categories = all_category, title=title, quote=quote)
@@ -28,7 +28,7 @@ def index():
 @login_required
 def new_post(id):
     form = PostForm()
-    category = PostCategory.query.filter_by(id=id).first()
+    category = Category.query.filter_by(id=id).first()
     
     if category is None:
         abort(404)
@@ -46,7 +46,7 @@ def new_post(id):
         return redirect(url_for('.category', id=category.id))
 
     
-    return render_template('new_post.html',post_form = form, category = category)
+    return render_template('new_post.html', post_form = form, category = category)
 
 @main.route('/categories/<int:id>')
 def category(id):
@@ -85,7 +85,7 @@ def view_post(id):
         abort(404)
     
     comment = Comment.get_comments(id)
-    return render_template('see-post.html', posts = posts, comment = comment)
+    return render_template('see_post.html', posts = posts, comment = comment)
     
 
 @main.route('/write_comment/<int:id>', methods = ['GET','POST'])
@@ -101,7 +101,7 @@ def post_comment(id):
 
     if form.validate_on_submit():
         opinion = form.opinion.data
-        new_comment = Comments(opinion = opinion, user_id = current_user.id, posts_id = posts.id)
+        new_comment = Comment(opinion = opinion, user_id = current_user.id, posts_id = posts.id)
         new_comment.save_comment()
         return redirect(url_for('.see_post', id = posts.id))
     
@@ -113,10 +113,11 @@ def delete_comment(id, comment_id):
     comment = Comment.query.filter_by(id = comment_id).first()
     db.session.delete(comment)
     db.session.commit()
-    return redirect(url_for("main.post", id = post.id))
+    return redirect(url_for("main.new_post", id = post.id))
+
+
 
 # profile
-
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()

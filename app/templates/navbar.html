@@ -27,7 +27,6 @@
                     <li><a href="/">Home</a></li>
                     <ul class="nav navbar-nav navbar-right " style="margin-right: -5%;">
                         {% if current_user.is_authenticated %}
-                        <li><a href="{{url_for('main.post')}}">Post a blog</a></li>
                         <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
                         <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
                         {% else %}

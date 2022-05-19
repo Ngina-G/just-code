@@ -3,7 +3,7 @@ from . import auth
 from flask_login import login_user, logout_user, login_required
 from ..models import User
 from .. import db
-from ..email import mail_message
+from ..mail import mail_message
 from .forms import RegistrationForm, LoginForm
 
 @auth.route('/login',methods=['GET','POST'])
@@ -17,7 +17,7 @@ def login():
 
         flash('Invalid username or Password')
 
-    title = "sixtysix login"
+    title = "justcode login"
     return render_template('auth/login.html',login_form = login_form,title=title)
 
 @auth.route('/logout')
@@ -35,7 +35,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        mail_message("Welcome to SixtySix","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to JustCode","email/welcome_user",user.email,user=user)
         
         return redirect(url_for('auth.login'))
         title = "New Account"

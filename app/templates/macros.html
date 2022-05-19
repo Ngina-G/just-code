@@ -2,12 +2,12 @@
 {% macro displayCategoryList(category_list)%} 
     {% for category in category_list %}
     
-        <option value="{{category.name|upper}}">
             <a href="{{url_for('.category',id=category.id)}}">
+        <option value="{{category.name|upper}}">
             {{category.name|upper}}
-            </a>
         </option>
-    {% endfor %} 
+              </a>
+  {% endfor %} 
 {% endmacro %}
 
 {% macro displayCategory(category_list)%} 

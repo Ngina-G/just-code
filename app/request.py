@@ -11,3 +11,4 @@ def get_quote():
 
     random_quote = Quote(response.get("author"), response.get("quote"))
     return random_quote
+get_quote()

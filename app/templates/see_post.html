@@ -11,7 +11,7 @@
 <div class="container">
      <div class="col-md-12">
             <div style="font-family: 'Josefin Slab', serif; font-weight:400;padding: 3rem;background-color: antiquewhite;">
-                <p class="text-left"><a class="btn btn-info" href="{{url_for('.new_post',id=posts.category_id)}}">Post</a></p>
+                <p class="text-left"><a class="btn btn-info" href="{{url_for('.new_post',id=posts.id)}}">Post</a></p>
                 <div class="well">
                 <h3>{{posts.content}}</h3>
                 </div>
@@ -25,7 +25,7 @@
                   <td>&nbsp;</td>
                   <td><h4 class="text-left"><a class="btn btn-round" href="{{url_for('.upvote',id=posts.id,vote_type=2)}}">Downvote <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> {{count_dislikes}} </a></h4></td>
                   <td>&nbsp;</td>
-                  <td><h4 class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Comments <a href="{{url_for('.post_comment',id=posts.id)}}"><button  class="btn btn-secondary">Add your comment</button></a></h4></td>
+                  <td><h4 class="text-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('.post_comment',id=posts.id)}}" style="background-color: black;"><button  class="btn btn-secondary">Add your comment</button></a></h4></td>
                 </tr>
               </table>
           

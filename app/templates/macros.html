@@ -19,7 +19,7 @@
                 <h3  style="font-family: 'EB Garamond', serif; font-weight:500;">{{post.title}}</h3>
                 <p  style="font-family: 'Josefin Slab', serif; font-weight:400;">{{post.content}}</p>
                 <h4  style="font-family: 'Josefin Slab', serif; font-weight:200;">{{post.user.username}}</h4>
-                <p><a href="{{url_for('.post_comment',id=post.id)}}"><button type="button" class="btn btn-primary"> Add comment</button></a></p>
+                <a href="{{url_for('.post_comment',id=post.id)}}"><button type="button" class="btn btn-primary"  style="background-color: black;"> Add comment</button></a>
             </div>
         </div>
     {% endfor %}
@@ -37,13 +37,11 @@
                 <h3  style="font-family: 'Josefin Slab', serif; font-weight:400;">{{posts.content}}</h3>
                 <h4>
                     <span>
-                        <a href=" {{url_for('.see_post',id=posts.id)}}">Read Comments</a>
+                        <a href=" {{url_for('.see_post',id=posts.id)}}" style="background-color: antiquewhite;">Read Comments</a>
                     </span>
                 </h4>
 
-                <a href=" {{url_for('.post_comment',id=posts.id)}}">
-                    <h4>Add Comment</h4>
-                </a>
+                <a href=" {{url_for('.post_comment',id=posts.id)}}"><button type="button" class="btn btn-primary" style="background-color: black;"">Add Comment</button></a>
             </div>
         </div>
     </div>

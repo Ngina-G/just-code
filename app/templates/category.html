@@ -12,10 +12,13 @@ style="
       background-image: url('/static/21.jpg');
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover;">
+      background-size: cover;
+      width: 70%;
+      margin-left: 15%;
+      margin-right: 15%;">
   <div class=" col-md-10 col-md-offset-1 col-sm-12">
       <h2 class="text-center" style="font-family: 'EB Garamond', serif; font-weight:500;">{{category.name|upper}}</h2>
-       <a href="/category/new-post/{{category.id}}"><button class="btn btn-dark"> Post a blog</button></a>
+       <a href="/category/new-post/{{category.id}}"><button class="btn btn-dark" style="background-color: black;"> Post a blog</button></a>
        <HR>
   </div>
 
@@ -24,7 +27,7 @@ style="
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;">
-      <div class="col-sm-12 col-md-8">
+      <div style="text-align: justify;">
           {{ macro.displayPosts(posts)}}
       </div>
     </div>

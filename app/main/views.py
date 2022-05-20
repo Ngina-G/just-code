@@ -9,7 +9,7 @@ from ..request import get_quote
 @main.route('/')
 def index():
     
-    all_posts = Post.query.order_by('id').all()
+    all_posts = Post.query.all()
     all_category = Category.get_categories()
     quote = get_quote()
     print(all_posts)
@@ -22,7 +22,7 @@ def index():
                         "email/welcome", new_subscriber.email)
     
     title = 'Blog Post'
-    return render_template('index.html',all_posts= all_posts, categories = all_category, title=title, quote=quote)
+    return render_template('index.html',posts= all_posts, categories = all_category, title=title, quote=quote)
 
 @main.route('/category/new-post/<int:id>',methods = ['GET','POST'])
 @login_required
@@ -85,7 +85,7 @@ def see_post(id):
     if posts is None:
         abort(404)
     
-    comment = Comment.get_comments(id)
+    comment = Comment.query.filter_by(id=id)
     count_likes = Votes.query.filter_by(posts_id=id, vote=1).all()
     count_dislikes = Votes.query.filter_by(posts_id=id, vote=2).all()
     return render_template('see_post.html', posts = posts, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes), category_id = id, categories=all_category)
@@ -129,7 +129,7 @@ def upvote(id,vote_type):
     if not votes:
         new_vote = Votes(vote=vote_type, user_id=current_user.id, posts_id=id)
         new_vote.save_vote()
-        print('YOU HAVE new VOTED')
+        print('YOU HAVE VOTED')
 
     for vote in votes:
         if f'{vote}' == to_str:
@@ -140,7 +140,7 @@ def upvote(id,vote_type):
             new_vote.save_vote()
             print('YOU HAVE VOTED')
             break
-    return redirect(url_for('.view_post', id=id)) 
+    return redirect(url_for('.see_post', id=id)) 
 
 # profile
 @main.route('/user/<uname>')
